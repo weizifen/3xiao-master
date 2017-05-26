@@ -7,6 +7,7 @@ export default class GameModel{
             this.lastPos = cc.p(-1, -1);
             this.cellTypeNum = 5;
             this.cellCreateType = []; // 升成种类只在这个数组里面查找
+            this.temp=null;
     }
     // cellTypeNum cell类型有多少种
     // 初始化  确认几行几列
@@ -47,6 +48,7 @@ export default class GameModel{
     //智能提示---在一段时间后用户未作出明确操作   ==横向遍历
     prompt(){
         // console.log(this.cells);
+        // var allCouple=[];
         var  ageCellModel=null;
         for(var i = 1;i <= GRID_WIDTH; i++){
   
@@ -56,15 +58,26 @@ export default class GameModel{
                     ageCellModel=this.cells[i][j];
                     continue;
                 }
-                if(ageCellModel.type==this.cells[i][j].type){
+                if(ageCellModel.type==this.cells[i][j].type&&ageCellModel.y==this.cells[i][j].y){
                     console.log(ageCellModel,this.cells[i][j])
                     var exist=this.rowSearchLeft(ageCellModel,ageCellModel.type);
                     if(!exist){
-                        var exist=this.rowSearchRight(this.cells[i][j],ageCellModel.type);
-                        }   
-                }
-                    ageCellModel=null;
+                         exist=this.rowSearchRight(this.cells[i][j],ageCellModel.type);
+                    }
+                    // console.log(exist[0].ice)
+                    if(exist)
+                    {                    
+                    var targetIsICE=exist[0].ice;
+                    var tempIsICE=this.temp.ice;
 
+                    if(exist&&!targetIsICE&&!tempIsICE){
+                        exist[0].toShake(5);
+                        exist[1].toShake(5);
+                        return exist;
+                    }}
+   
+                }
+                ageCellModel=this.cells[i][j];
             }
         }
     }
@@ -75,15 +88,15 @@ export default class GameModel{
         var tempX=modelX-1;
         var tempY=modelY;
         var temp=this.cells[tempY][tempX];
+        this.temp=temp;
         if(temp){
-            console.log("存在左边一点");
             // 左上
             var typeOne=this.pointForTop(temp);
             // console.log(typeOne,typeA);  
             if(typeOne!=null){          
                 if(typeOne.type==typeA){
-                    console.log("左上方");
-                    return typeOne;
+                    console.log("存在左边一点,左上方");
+                    return [typeOne,model,"存在左边一点,左上方"];
                 }
             }   
             // 左右
@@ -91,9 +104,10 @@ export default class GameModel{
             // console.log(typeThree,typeA);
             if(typeThree!=null){                      
                 if(typeThree.type==typeA){
-                    console.log("左左位置");
-                    return typeThree;
+                    console.log("存在左边一点,左左位置");
+                    return [typeThree,model,"存在左边一点,左左位置"];
                 }
+
             }
 
             // 左下
@@ -101,30 +115,30 @@ export default class GameModel{
             // console.log(typeTwo,typeA); 
             if(typeTwo!=null){                                 
                 if(typeTwo.type==typeA){
-                    console.log("左下方");
-                    return typeTwo;
+                    console.log("存在左边一点,左下方");
+                    return [typeTwo,model,"存在左边一点,左下方"];
                 }
             }
 
         }
+        return ;
     }
     rowSearchRight(model,typeB){
         var modelX=model.x;
         var modelY=model.y; 
         var modelX=model.x;
         var modelY=model.y;
-        var tempX=modelX-1;
+        var tempX=modelX+1;
         var tempY=modelY;
         var temp=this.cells[tempY][tempX];
         if(temp){
-            console.log("存在右边一点");
             // 左上
             var typeOne=this.pointForTop(temp);
             // console.log(typeOne,typeB);  
             if(typeOne!=null){                                                       
                 if(typeOne.type==typeB){
-                    console.log("右上方");
-                    return typeOne;
+                    console.log("存在右边一点,右上方");
+                    return [typeOne,model,"存在右边一点,右上方"];
                 }
             }
             // 左右
@@ -132,8 +146,8 @@ export default class GameModel{
             // console.log(typeThree,typeB);
             if(typeThree!=null){                                             
                 if(typeThree.type==typeB){
-                    console.log("右右位置");
-                    return typeThree;
+                    console.log("存在右边一点,右右位置");
+                    return [typeThree,model,"存在右边一点,右右位置"];
                 }
             }
 
@@ -142,12 +156,13 @@ export default class GameModel{
                 // console.log(typeTwo,typeB); 
             if(typeTwo!=null){                                 
                 if(typeTwo.type==typeB){
-                    console.log("右下方");
-                    return typeTwo;
+                    console.log("存在右边一点,右下方");
+                    return [typeTwo,model,"存在右边一点,右下方"];
                 }
             }
 
-        }      
+        }
+        return ;      
     }
     pointForTop(model){
         var modelX=model.x;
@@ -155,7 +170,7 @@ export default class GameModel{
         var tempX=modelX;
         var tempY=modelY+1;
         if(tempX>0&&tempY>0&&tempX<10&&tempY<10){        
-            console.log(tempY,tempX)
+            // console.log(tempY,tempX)
             var NewTemp=this.cells[tempY][tempX];
             if(NewTemp.type){
                 return NewTemp;
@@ -168,7 +183,7 @@ export default class GameModel{
         var tempX=modelX;
         var tempY=modelY-1;
         if(tempX>0&&tempY>0&&tempX<10&&tempY<10){        
-            console.log(tempY,tempX)
+            // console.log(tempY,tempX)
             var NewTemp=this.cells[tempY][tempX];
             if(NewTemp.type){
                 return NewTemp;
@@ -182,7 +197,7 @@ export default class GameModel{
         var tempX=modelX-1;
         var tempY=modelY;
         if(tempX>0&&tempY>0&&tempX<10&&tempY<10){        
-            console.log(tempY,tempX)
+            // console.log(tempY,tempX)
             var NewTemp=this.cells[tempY][tempX];
             if(NewTemp.type){
                 return NewTemp;
@@ -195,7 +210,7 @@ export default class GameModel{
         var tempX=modelX+1;
         var tempY=modelY;
         if(tempX>0&&tempY>0&&tempX<10&&tempY<10){        
-            console.log(tempY,tempX)
+            // console.log(tempY,tempX) 
             var NewTemp=this.cells[tempY][tempX];
             if(NewTemp.type){
                 return NewTemp;

@@ -29,7 +29,7 @@ cc.Class({
         this.isSelect = false;
     },
     
-    initWithModel: function(model){
+    initWithModel(model){
         this.model = model;
         var x = model.startX;
         var y = model.startY;
@@ -48,7 +48,30 @@ cc.Class({
             this.ballStatus=true; 
         }
     },
-    updateView: function(){
+    // 智能提示
+    updatePrompt(){
+        var cmd = this.model.cmd;
+        if(cmd.length <= 0){
+            return ;
+        }
+        var actionArray = [];
+         for(var i in cmd){
+             if(cmd[i].action == "toShake"){
+                let a= 0;
+                 let tmpAction1 = cc.rotateBy(0.4,60);
+                 actionArray.push(tmpAction1);
+                 let tmpAction2 = cc.rotateBy(0.4,-120);
+                 actionArray.push(tmpAction2);
+                 let tmpAction3 = cc.rotateBy(0.2,60);
+                 actionArray.push(tmpAction3);                 
+                var curTime = cmd[i].playTime;
+            }
+         }
+                
+                this.node.runAction(cc.repeatForever(cc.sequence(actionArray)));    
+    },
+    // 
+    updateView(){
         // console.log(this.model.ice)
         //气球显示和隐藏|声音播放
         if(this.ballStatus&&this.model.ice==CELL_ICE.HIDDEN){
@@ -111,7 +134,8 @@ cc.Class({
     // update: function (dt) {
 
     // },
-    setSelect: function(flag){
+
+    setSelect(flag){
         var animation = this.node.getComponent(cc.Animation);
         var bg = this.node.getChildByName("select");
         if(flag == false && this.isSelect && this.model.status == CELL_STATUS.COMMON){

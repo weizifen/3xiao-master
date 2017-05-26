@@ -31,10 +31,12 @@ cc.Class({
         gridScript.initWithCellModels(this.gameModel.getCells());
         
         
-        this.gameModel.prompt();
 
     },
 
+    shakeCell(){
+        return this.gameModel.prompt();
+    },
     selectCell:function(pos){
         return this.gameModel.selectCell(pos);
     },

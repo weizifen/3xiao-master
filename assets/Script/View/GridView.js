@@ -23,7 +23,16 @@ cc.Class({
         bgAudio:{
             default:null,
             url:cc.AudioClip,
-        }
+        },
+        score:{
+            default:null,
+            type:cc.Label,
+        },
+        score:{
+            default:null,
+            type:cc.Label,
+        },
+        _scoreC:0,
         
     },
 
@@ -35,12 +44,36 @@ cc.Class({
         this.lastTouchPos = cc.Vec2(-1, -1);
         this.isCanMove = true;
         this.isInPlayAni = false; // 是否在播放中
+
+
+        // 智能提示
+        // this.prompt();
+        // var x=this.prompt();
+        // this.schedule(function(){
+        //     this.prompt();
+        // },5)
+        
     },
-    setController: function(controller){
+    //智能提示
+    prompt(){
+        var shakeA=this.controller.shakeCell();
+        shakeA.forEach(function(element) {
+            var viewInfo = this.findViewByModel(element);
+            // console.log(viewInfo)
+            if(viewInfo){
+                var cellViewScript = viewInfo.view.getComponent("CellView");
+                cellViewScript.updatePrompt();
+            }
+            
+             
+        }, this);
+
+    },
+    setController(controller){
         this.controller = controller;
     },
 
-    initWithCellModels: function(cellsModels){
+    initWithCellModels(cellsModels){
         this.cellViews = [];
         for(var i = 1;i<=9;i++){
             this.cellViews[i] = [];
@@ -55,7 +88,7 @@ cc.Class({
             }
         }
     },
-    setListener: function(){
+    setListener(){
         this.node.on("touchstart", function(eventTouch){
             if(this.isInPlayAni){
                 return true;
@@ -91,12 +124,11 @@ cc.Class({
            }
         }, this);
         this.node.on("touchend", function(eventTouch){
-          // console.log("1111");
         }, this);
         this.node.on("touchcancel", function(eventTouch){
-          // console.log("1111");
         }, this);
     },
+    // 将可点击的像素坐标转化为cell坐标
     convertTouchPosToCell: function(pos){
         pos = this.node.convertToNodeSpace(pos);
         console.log(pos)
@@ -115,6 +147,10 @@ cc.Class({
             var view = null;
             if(!viewInfo){
                 var type = model.type;
+                // 分数统计
+                this._scoreC+=10
+                this.score.string=this._scoreC;
+
                 var aniView = cc.instantiate(this.animalPrefab[type]);
                 aniView.parent = this.node;
                 var cellViewScript = aniView.getComponent("CellView");
@@ -196,6 +232,24 @@ cc.Class({
         // console.log(this.controller);
         var result = this.controller.selectCell(cellPos);
         console.log(result)
+
+// 智能提示
+        // //长时间未点击第二项
+        // if(result[0].length==0&&result[1].length==0){
+        //         console.log("执行了")
+        //         this.scheduleOnce(function(){
+        //             this.prompt();
+        //         },10);
+        // }
+        // if(result[0].length!=0&&result[1].length!=0){
+        //         this.unschedule(function(){
+        //            this.prompt();
+        //            this.node.cleanup();  
+        //         })
+        // }
+
+
+
         var changeModels = result[0];
         var effectsQueue = result[1];
         this.playEffect(effectsQueue);
