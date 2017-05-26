@@ -15,7 +15,12 @@ cc.Class({
         defaultFrame:{
             default: null,
             type: cc.SpriteFrame
-        }
+        },
+        ball_break:{
+            default:null,
+            url:cc.AudioClip,
+        },
+        ballStatus:false,
     },
 
     // use this for initialization
@@ -35,10 +40,24 @@ cc.Class({
             animation.stop();
         } 
         else{
-            animation.play(model.status);
+            animation.play(model.status);       
+        };
+        if(model.ice==CELL_ICE.DISPLAY){
+            var ice=this.node.getChildByName("ice");
+            ice.active = true;
+            this.ballStatus=true; 
         }
     },
     updateView: function(){
+        // console.log(this.model.ice)
+        //气球显示和隐藏|声音播放
+        if(this.ballStatus&&this.model.ice==CELL_ICE.HIDDEN){
+              this.ballStatus=false;
+              var ice=this.node.getChildByName("ice");
+              ice.active = this.model.ice; 
+              cc.audioEngine.play(this.ball_break,false,0.2); 
+        }
+        
         var cmd = this.model.cmd;
         if(cmd.length <= 0){
             return ;

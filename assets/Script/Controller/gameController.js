@@ -29,7 +29,9 @@ cc.Class({
         gridScript.setController(this);
         // 将模型附加到依赖的视图上
         gridScript.initWithCellModels(this.gameModel.getCells());
-
+        
+        
+        this.gameModel.prompt();
 
     },
 

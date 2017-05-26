@@ -18,6 +18,12 @@ global.CELL_STATUS = {
     WRAP: "wrap",
     BIRD: "bird"
 } 
+
+// ICE冰块笼罩
+global.CELL_ICE={
+    DISPLAY:true,
+    HIDDEN:false,
+}
 // 网格宽高
 global.GRID_WIDTH = 9;
 global.GRID_HEIGHT = 9;

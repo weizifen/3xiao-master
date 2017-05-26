@@ -19,6 +19,10 @@ cc.Class({
         effectLayer: {
             default: null,
             type: cc.Node
+        },
+        bgAudio:{
+            default:null,
+            url:cc.AudioClip,
         }
         
     },
@@ -26,6 +30,7 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
+        cc.audioEngine.play(this.bgAudio,true,0.2);        
         this.setListener();
         this.lastTouchPos = cc.Vec2(-1, -1);
         this.isCanMove = true;
@@ -51,7 +56,7 @@ cc.Class({
         }
     },
     setListener: function(){
-        this.node.on(cc.Node.EventType.TOUCH_START, function(eventTouch){
+        this.node.on("touchstart", function(eventTouch){
             if(this.isInPlayAni){
                 return true;
             }
@@ -72,7 +77,7 @@ cc.Class({
             }
            return true;
         }, this);
-        this.node.on(cc.Node.EventType.TOUCH_MOVE, function(eventTouch){
+        this.node.on("touchmove", function(eventTouch){
            if(this.isCanMove){
                var startTouchPos = eventTouch.getStartLocation ();
             //    console.log(startTouchPos)
@@ -85,10 +90,10 @@ cc.Class({
                }
            }
         }, this);
-        this.node.on(cc.Node.EventType.TOUCH_END, function(eventTouch){
+        this.node.on("touchend", function(eventTouch){
           // console.log("1111");
         }, this);
-        this.node.on(cc.Node.EventType.TOUCH_CANCEL, function(eventTouch){
+        this.node.on("touchcancel", function(eventTouch){
           // console.log("1111");
         }, this);
     },
@@ -119,6 +124,7 @@ cc.Class({
             else{
                 view = viewInfo.view;
                 this.cellViews[viewInfo.y][viewInfo.x] = null;
+                // console.log("存在")
             }
             var cellScript = view.getComponent("CellView");
             cellScript.updateView();

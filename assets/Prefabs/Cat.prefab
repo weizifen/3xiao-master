@@ -320,6 +320,9 @@
     "_enabled": true,
     "defaultFrame": {
       "__uuid__": "3537d328-242e-4afa-ae3e-84bfd5119ce6"
+    },
+    "ball_break": {
+      "__uuid__": "a98d093d-ff44-4bbe-85d6-05380e2ab8c2"
     }
   },
   {

@@ -8,10 +8,21 @@ export default class CellModel{
     this.startY = 1;
     this.cmd = [];
     this.isDeath = false;
-    this.objecCount = Math.floor(Math.random() * 1000);
+    // 冰块
+    this.ice=false;
+    // this.objecCount = Math.floor(Math.random() * 1000);
     }
     init(type){
         this.type = type;
+    }
+    // 判断是否有笼罩|调节冰块数量ice
+    isIce(ice){
+        if(ice>=0.8){
+            this.ice=CELL_ICE.DISPLAY;
+        }else{
+           this.ice=CELL_ICE.HIDDEN; 
+        }
+        // console.log(this.ice);
     }
     isEmpty(){
        return this.type == CELL_TYPE.EMPTY;  
@@ -82,6 +93,10 @@ export default class CellModel{
     }
     moveToAndDie(pos){
 
+    }
+                // 移除表面冰块
+    removeIce(){
+        this.ice=CELL_ICE.HIDDEN;
     }
     isBird(){
         return this.type == CELL_TYPE.G;
