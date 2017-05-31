@@ -16,6 +16,10 @@ cc.Class({
             default: [],
             type: [cc.Prefab]
         },
+        IcePrefab: {
+            default: [],
+            type: [cc.Prefab]
+        },
         effectLayer: {
             default: null,
             type: cc.Node
@@ -33,6 +37,8 @@ cc.Class({
             type:cc.Label,
         },
         _scoreC:0,
+        _flag:true,
+        _beforeIce:null,
         
     },
 
@@ -88,11 +94,44 @@ cc.Class({
             }
         }
     },
+    initWithIceModels(icesModels){
+        
+        this.icesModels = [];
+        for(var i = 1;i<=9;i++){
+            this.icesModels[i] = [];
+            for(var j = 1;j<=9;j++){
+                // var type = cellsModels[i][j].type;
+                var iceView = cc.instantiate(this.IcePrefab[0]);
+                iceView.parent = this.node;
+                var cellViewScript = iceView.getComponent("IceView");
+                cellViewScript.initWithModel(icesModels[i][j]);
+                this.icesModels[i][j] = iceView;
+            }
+        }
+        // if(this._flag){
+        // const bef=icesModels;
+        // console.log(bef);
+        // this._beforeIce=bef;
+        // this._flag=false;
+
+        // }
+        while(!this._beforeIce){
+            console.log("执行了")
+          this._beforeIce=  icesModels;
+        }
+
+    },
+
     setListener(){
+        console.log(this._beforeIce);
         this.node.on("touchstart", function(eventTouch){
             if(this.isInPlayAni){
                 return true;
             }
+
+            
+
+
             var touchPos = eventTouch.getLocation();
             var cellPos = this.convertTouchPosToCell(touchPos);
             if(cellPos){
@@ -144,18 +183,20 @@ cc.Class({
         for(var i in changeModels){
             var model = changeModels[i];
             var viewInfo = this.findViewByModel(model);
-            var view = null;
+            var view = null;         
             if(!viewInfo){
                 var type = model.type;
                 // 分数统计
                 this._scoreC+=10
                 this.score.string=this._scoreC;
-
                 var aniView = cc.instantiate(this.animalPrefab[type]);
                 aniView.parent = this.node;
                 var cellViewScript = aniView.getComponent("CellView");
                 cellViewScript.initWithModel(model);
                 view = aniView;
+
+                
+
             }
             else{
                 view = viewInfo.view;
@@ -164,6 +205,8 @@ cc.Class({
             }
             var cellScript = view.getComponent("CellView");
             cellScript.updateView();
+            // var icecript = view.getComponent("IceView");
+            // icecript.updateView();
             if (!model.isDeath) {
                 newCellViewInfo.push({
                     model: model,
@@ -197,7 +240,9 @@ cc.Class({
         for(var i = 1;i <=9 ;i++){
             for(var j = 1 ;j <=9 ;j ++){
                 if(this.cellViews[i][j] && this.cellViews[i][j].getComponent("CellView").model == model){
-                    return {view:this.cellViews[i][j],x:j, y:i};
+                    return {view:this.cellViews[i][j],
+                        x:j, 
+                        y:i};
                 }
             }
         }
@@ -231,7 +276,7 @@ cc.Class({
     selectCell(cellPos){
         // console.log(this.controller);
         var result = this.controller.selectCell(cellPos);
-        console.log(result)
+        // console.log(result)
 
 // 智能提示
         // //长时间未点击第二项
@@ -258,12 +303,48 @@ cc.Class({
         this.controller.cleanCmd(); 
         if(changeModels.length >= 2){
             this.updateSelect(cc.p(-1,-1));
-        }
+            this.updateIces();
+                }
         else{
             this.updateSelect(cellPos);
         }
         return changeModels;
     },
+    newIceBlock(){
+        
+        // this.beforeIceBlock=[];
+        // 获取到最新的IcesBlock状态
+        // console.log(this.controller.getIcesBlock());
+        var newIceBlock=this.controller.getIcesBlock();
+        console.log(this._beforeIce);
+        // console.log(newIceBlock);
+        for(var i = 1;i<=9;i++){
+                // this.beforeIceBlock[i]=[];
+            for(var j = 1;j<=9;j++){
+                // console.log(newIceBlock[i][j].isDisplay)
+                // console.log(this.beforeIceBlock[i][j].isDisplay);
+                // this.beforeIceBlock[i][j]=newIceBlock[i][j].isDisplay;
+                // console.log(newIceBlock[i][j].isDisplay!=this.beforeIceBlock[i][j].isDisplay);
+                
+                // console.log(this.beforeIceBlock[i][j].isDisplay);
+                // if(newIceBlock[i][j].isDisplay == false){
+                //     console.log(i+"和"+j);
+                // }
+            }
+            }
+    },
+    // 获得最新的状态
+    updateIces(){
+        let newCellViewInfo = [];
+        // console.log(this.icesModels);
+        for(var i = 1;i <=9 ;i++){
+            for(var j = 1 ;j <=9 ;j ++){
+                this.icesModels[i][j].model=this._beforeIce[i][j];
+                this.icesModels[i][j].getComponent("IceView").updateWithModel(this._beforeIce[i][j]);
+                }
+            }      
+    },
+
     playEffect(effectsQueue){
         this.effectLayer.getComponent("Boom").playEffects(effectsQueue);
     }

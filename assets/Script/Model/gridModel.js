@@ -1,8 +1,10 @@
-import CellModel from './CellModel'
+import CellModel from './CellModel';
+import IceModel from './IceModel'
 export default class GameModel{
     
     constructor(){
             this.cells = null;
+            this.iceBlocks = null;
             this.cellBgs = null;
             this.lastPos = cc.p(-1, -1);
             this.cellTypeNum = 5;
@@ -15,16 +17,20 @@ export default class GameModel{
     // 初始化CellModel
     init(cellTypeNum){
         this.cells = [];
+        this.iceBlocks = [];
         //  每次创造的类型
         this.setCellTypeNum(cellTypeNum || this.cellTypeNum);
         for(var i = 1;i<=GRID_WIDTH;i++){
             this.cells[i] = [];
+            this.iceBlocks[i] = [];
             for(var j = 1;j <= GRID_HEIGHT;j++){
+                this.iceBlocks[i][j] = new IceModel();
                 this.cells[i][j] = new CellModel();
             }
         }
         for(var i = 1;i<=GRID_WIDTH;i++){
             for(var j = 1;j <= GRID_HEIGHT;j++){
+                this.iceBlocks[i][j].init(this.getCellsIce());
                 let flag = true;
                 while(flag){
                     flag = false;
@@ -37,6 +43,8 @@ export default class GameModel{
                     if(result.length > 2){
                         flag = true;
                     }
+                    this.iceBlocks[i][j].setXY(j, i);
+                    this.iceBlocks[i][j].setStartXY(j, i);
                     this.cells[i][j].setXY(j, i);
                     this.cells[i][j].setStartXY(j, i);
                 }
@@ -302,6 +310,9 @@ export default class GameModel{
     }
     getCells(){
         return this.cells;
+    }
+    getIceBlocks(){
+        return this.iceBlocks;
     }
     selectCell(pos){
         this.changeModels = [];// 发生改变的model，将作为返回值，给view播动作
@@ -603,8 +614,32 @@ export default class GameModel{
     }
     crushCell(x,y,needShake){
             let model = this.cells[y][x];
+            let iceBlocks= this.iceBlocks[y][x];
             this.pushToChangeModels(model);
-        if(model.ice==CELL_ICE.HIDDEN){
+        // if(model.ice==CELL_ICE.HIDDEN){
+        //     if(needShake){
+        //         model.toShake(this.curTime)
+        //         model.toDie(this.curTime + ANITIME.DIE_SHAKE);
+        //     }
+        //     else{
+        //         model.toDie(this.curTime);
+        //     }
+        //     //  消除效果
+        //     this.addCrushEffect(this.curTime, cc.p(model.x, model.y));
+        //     this.cells[y][x] = null;
+        // }
+        // else{
+        //     // console.log(model.ice);
+        //     model.removeIce();
+        //     // console.log(model.ice);
+        // }
+
+
+            if(iceBlocks.isDisplay){
+                iceBlocks.removeIceBlock();
+            }
+            // console.log(this.iceBlocks);
+
             if(needShake){
                 model.toShake(this.curTime)
                 model.toDie(this.curTime + ANITIME.DIE_SHAKE);
@@ -615,12 +650,8 @@ export default class GameModel{
             //  消除效果
             this.addCrushEffect(this.curTime, cc.p(model.x, model.y));
             this.cells[y][x] = null;
-        }
-        else{
-            // console.log(model.ice);
-            model.removeIce();
-            // console.log(model.ice);
-        }
+
+
     }
     // 是否有冰块笼罩
     getCellsIce(){

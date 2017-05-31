@@ -19,8 +19,13 @@ global.CELL_STATUS = {
     BIRD: "bird"
 } 
 
-// ICE冰块笼罩
+// 气球笼罩
 global.CELL_ICE={
+    DISPLAY:true,
+    HIDDEN:false,
+}
+// Ice冰块笼罩
+global.CELL_ICE_BLOCK={
     DISPLAY:true,
     HIDDEN:false,
 }
