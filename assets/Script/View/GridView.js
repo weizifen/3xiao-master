@@ -36,6 +36,11 @@ cc.Class({
             default:null,
             type:cc.Label,
         },
+        timeTotal:60,
+        time:{
+            default:null,
+            type:cc.Label,
+        },
         _scoreC:0,
         _flag:true,
         _beforeIce:null,
@@ -50,6 +55,18 @@ cc.Class({
         this.lastTouchPos = cc.Vec2(-1, -1);
         this.isCanMove = true;
         this.isInPlayAni = false; // 是否在播放中
+
+        // 时间  定时
+        this.schedule(function(){
+            this.timeTotal--;
+            if(this.timeTotal>0){
+            this.time.string=this.timeTotal;
+        }else{
+                cc.audioEngine.pauseAll();
+                cc.sys.localStorage.setItem("score",this._scoreC)
+                cc.director.loadScene("over");
+            }
+        },1)
 
 
         // 智能提示
@@ -309,29 +326,6 @@ cc.Class({
             this.updateSelect(cellPos);
         }
         return changeModels;
-    },
-    newIceBlock(){
-        
-        // this.beforeIceBlock=[];
-        // 获取到最新的IcesBlock状态
-        // console.log(this.controller.getIcesBlock());
-        var newIceBlock=this.controller.getIcesBlock();
-        console.log(this._beforeIce);
-        // console.log(newIceBlock);
-        for(var i = 1;i<=9;i++){
-                // this.beforeIceBlock[i]=[];
-            for(var j = 1;j<=9;j++){
-                // console.log(newIceBlock[i][j].isDisplay)
-                // console.log(this.beforeIceBlock[i][j].isDisplay);
-                // this.beforeIceBlock[i][j]=newIceBlock[i][j].isDisplay;
-                // console.log(newIceBlock[i][j].isDisplay!=this.beforeIceBlock[i][j].isDisplay);
-                
-                // console.log(this.beforeIceBlock[i][j].isDisplay);
-                // if(newIceBlock[i][j].isDisplay == false){
-                //     console.log(i+"和"+j);
-                // }
-            }
-            }
     },
     // 获得最新的状态
     updateIces(){
