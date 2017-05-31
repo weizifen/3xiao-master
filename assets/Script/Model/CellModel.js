@@ -17,11 +17,13 @@ export default class CellModel{
     }
     // 判断是否有笼罩|调节冰块数量ice
     isIce(ice){
-        if(ice>=0.8){
-            this.ice=CELL_ICE.DISPLAY;
-        }else{
-           this.ice=CELL_ICE.HIDDEN; 
-        }
+        // if(ice>=0.8){
+        //     this.ice=CELL_ICE.DISPLAY;
+        // }else{
+        //    this.ice=CELL_ICE.HIDDEN; 
+        // }
+        this.ice=CELL_ICE.HIDDEN; 
+
         // console.log(this.ice);
     }
     isEmpty(){

@@ -23,10 +23,10 @@ cc.Class({
     },
 
     // use this for initialization
-    onLoad: function () {
+    onLoad () {
 
     },
-       playEffects: function(effectQueue){
+       playEffects(effectQueue){
         if(!effectQueue || effectQueue.length <= 0){
             return ;
         }

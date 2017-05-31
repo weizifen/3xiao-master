@@ -38,7 +38,7 @@ cc.Class({
 
 
     // use this for initialization
-    onLoad: function () {
+    onLoad () {
         cc.audioEngine.play(this.bgAudio,true,0.2);        
         this.setListener();
         this.lastTouchPos = cc.Vec2(-1, -1);
@@ -129,7 +129,7 @@ cc.Class({
         }, this);
     },
     // 将可点击的像素坐标转化为cell坐标
-    convertTouchPosToCell: function(pos){
+    convertTouchPosToCell(pos){
         pos = this.node.convertToNodeSpace(pos);
         console.log(pos)
         if(pos.x < 0 || pos.x >= GRID_PIXEL_WIDTH || pos.y < 0 || pos.y >= GRID_PIXEL_HEIGHT){
@@ -139,7 +139,7 @@ cc.Class({
         var y = Math.floor(pos.y / CELL_HEIGHT) + 1;
         return cc.p(x, y);
     },
-    updateView: function(changeModels){
+    updateView(changeModels){
         let newCellViewInfo = [];
         for(var i in changeModels){
             var model = changeModels[i];
@@ -176,7 +176,7 @@ cc.Class({
             this.cellViews[model.y][model.x] = ele.view;
         },this);
     },
-    updateSelect: function(pos){
+    updateSelect(pos){
          for(var i = 1;i <=9 ;i++){
             for(var j = 1 ;j <=9 ;j ++){
                 if(this.cellViews[i][j]){
@@ -193,7 +193,7 @@ cc.Class({
         }
         
     },
-    findViewByModel: function(model){
+    findViewByModel(model){
         for(var i = 1;i <=9 ;i++){
             for(var j = 1 ;j <=9 ;j ++){
                 if(this.cellViews[i][j] && this.cellViews[i][j].getComponent("CellView").model == model){
@@ -203,7 +203,7 @@ cc.Class({
         }
         return null;
     },
-    getPlayAniTime: function(changeModels){
+    getPlayAniTime(changeModels){
         if(!changeModels){
             return 0;
         }
@@ -217,7 +217,7 @@ cc.Class({
         },this);
         return maxTime;
     },
-    disableTouch: function(time){
+    disableTouch(time){
         if(time <= 0){
             return ;
         }
@@ -228,7 +228,7 @@ cc.Class({
     },
 
     // 点击态
-    selectCell: function(cellPos){
+    selectCell(cellPos){
         // console.log(this.controller);
         var result = this.controller.selectCell(cellPos);
         console.log(result)
@@ -264,7 +264,7 @@ cc.Class({
         }
         return changeModels;
     },
-    playEffect: function(effectsQueue){
+    playEffect(effectsQueue){
         this.effectLayer.getComponent("Boom").playEffects(effectsQueue);
     }
 
