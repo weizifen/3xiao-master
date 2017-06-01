@@ -8,6 +8,8 @@ global.CELL_TYPE = {
     F : 6,
     BIRD : 7
 }
+// 难度调节(越小难度越大)
+global.GAME_HARD=0.8
 global.CELL_BASENUM = 6;
 // 节点所处状态
 global.CELL_STATUS = {

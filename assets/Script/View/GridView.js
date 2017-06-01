@@ -105,6 +105,15 @@ cc.Class({
     loadIce(){
         
         this.iceCount.string=this.controller.getIceBlockCount();
+        if(this.iceCount.string==0){
+            var actionArray=[];
+            actionArray.push(cc.delayTime(2));
+            var callFunc = cc.callFunc(function(){
+                cc.director.loadScene("congratulation");  
+                },this);
+            actionArray.push(callFunc);
+            this.node.runAction(cc.sequence(actionArray)); 
+        }
 
     },
 
@@ -340,7 +349,6 @@ cc.Class({
     },
     // 获得最新的状态
     updateIces(){
-        this.loadIce();
         let newCellViewInfo = [];
         // console.log(this.icesModels);
         for(var i = 1;i <=9 ;i++){
@@ -349,6 +357,8 @@ cc.Class({
                 this.icesModels[i][j].getComponent("IceView").updateWithModel(this._beforeIce[i][j]);
                 }
             }
+        this.loadIce();
+
 
     },
 

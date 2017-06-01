@@ -20,8 +20,9 @@ export default class IceModel{
         this.isDeath = true;
     }
     init(getIsDisplay){
+        console.log(global.GAME_HARD)
       this.beforeDisplay=getIsDisplay;
-      if(getIsDisplay>0.8){
+      if(getIsDisplay>global.GAME_HARD){
         this.isDisplay= true;  
       }
       else{

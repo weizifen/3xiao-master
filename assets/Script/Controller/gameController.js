@@ -37,7 +37,13 @@ cc.Class({
     },
     
     getIceBlockCount(){
+        // if(this.gameModel.getIceCount()==0){
+        //     this.setTimeout(function() {
+        //     return cc.director.loadScene("congratulation");                
+        //     }, 3000);
+        // }else{
         return this.gameModel.getIceCount();
+        // }
     },
     getIcesBlock(){
         

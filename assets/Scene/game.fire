@@ -827,11 +827,15 @@
     "score": {
       "__id__": 9
     },
-    "timeTotal": 60,
+    "timeTotal": 100,
     "time": {
       "__id__": 13
     },
+    "iceCount": {
+      "__id__": 17
+    },
     "_scoreC": 0,
+    "_iceC": 0,
     "_flag": true,
     "_beforeIce": null
   },
