@@ -904,7 +904,15 @@
     },
     "crushEffect": {
       "__uuid__": "3b260bf3-fddb-415d-9d29-4247d176144e"
-    }
+    },
+    "eliminate": [
+      {
+        "__uuid__": "6fab452b-9a9c-4de8-b650-b5711614ba6c"
+      },
+      {
+        "__uuid__": "3dc1adf9-5591-4a6c-9e4d-1e2441945d24"
+      }
+    ]
   },
   {
     "__type__": "cc.Widget",

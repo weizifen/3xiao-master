@@ -12,14 +12,19 @@ cc.Class({
         //    readonly: false,    // optional, default is false
         // },
         // ...
-          bombWhite:{
+        bombWhite:{
             default: null,
             type: cc.Prefab
         },
         crushEffect:{
             default: null,
             type: cc.Prefab
-        }
+        },
+        // 爆炸声音
+        eliminate:{
+            default:[],
+            url:cc.AudioClip,
+        },
     },
 
     // use this for initialization
@@ -39,16 +44,21 @@ cc.Class({
                     instantEffect = cc.instantiate(this.crushEffect);
                     animation  = instantEffect.getComponent(cc.Animation);
                     animation.play("effect");
+                    cc.audioEngine.play(this.eliminate[1]);
                 }
                 else if(cmd.action == "rowBomb"){
+                    // cc.audioEngine.stopAll();
                     instantEffect = cc.instantiate(this.bombWhite);
                     animation  = instantEffect.getComponent(cc.Animation);
                     animation.play("effect_line");
+                    cc.audioEngine.play(this.eliminate[0]);
                 }
                 else if(cmd.action == "colBomb"){
+                    // cc.audioEngine.stopAll();
                     instantEffect = cc.instantiate(this.bombWhite);
                     animation  = instantEffect.getComponent(cc.Animation);
                     animation.play("effect_col");
+                    cc.audioEngine.play(this.eliminate[0]);
                 }
 
                 instantEffect.x = CELL_WIDTH * (cmd.pos.x - 0.5);

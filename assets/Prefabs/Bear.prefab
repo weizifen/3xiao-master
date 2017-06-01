@@ -323,7 +323,22 @@
     },
     "ball_break": {
       "__uuid__": "a98d093d-ff44-4bbe-85d6-05380e2ab8c2"
-    }
+    },
+    "ballStatus": false,
+    "eliminate": [
+      {
+        "__uuid__": "695ffce8-f85b-45c2-b520-215cbc808139"
+      },
+      {
+        "__uuid__": "6fab452b-9a9c-4de8-b650-b5711614ba6c"
+      },
+      {
+        "__uuid__": "3dc1adf9-5591-4a6c-9e4d-1e2441945d24"
+      },
+      {
+        "__uuid__": "750d9714-6f71-4a86-9ac1-478e6833075b"
+      }
+    ]
   },
   {
     "__type__": "cc.PrefabInfo",

@@ -21,6 +21,11 @@ cc.Class({
             url:cc.AudioClip,
         },
         ballStatus:false,
+        // 去除声音
+        eliminate:{
+            default:[],
+            url:cc.AudioClip,
+        },
     },
 
     // use this for initialization

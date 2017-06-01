@@ -1,9 +1,7 @@
 {
   "appKey": "",
   "appSecret": "",
-  "excludeScenes": [
-    "203b06dd-7c3e-497d-bc54-f6ebe0a07e2a"
-  ],
+  "excludeScenes": [],
   "includeAnySDK": false,
   "includeSdk": [
     "anysdk"
@@ -20,7 +18,7 @@
   "packageName": "org.cocos2d.3xiao-master",
   "privateKey": "",
   "renderMode": "0",
-  "startScene": "cb6cf1ff-5090-4734-b204-60f904dc63ae",
+  "startScene": "203b06dd-7c3e-497d-bc54-f6ebe0a07e2a",
   "title": "3xiao-master",
   "webOrientation": "auto"
 }
