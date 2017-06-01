@@ -54,7 +54,6 @@ cc.Class({
                 },this);
             actionArray.push(callFunc);
             this.node.runAction(cc.sequence(actionArray));
-
         }
 
     },

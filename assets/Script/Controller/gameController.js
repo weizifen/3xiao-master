@@ -36,7 +36,9 @@ cc.Class({
 
     },
     
-
+    getIceBlockCount(){
+        return this.gameModel.getIceCount();
+    },
     getIcesBlock(){
         
         return  this.gameModel.getIceBlocks();
@@ -44,10 +46,10 @@ cc.Class({
     shakeCell(){
         return this.gameModel.prompt();
     },
-    selectCell:function(pos){
+    selectCell(pos){
         return this.gameModel.selectCell(pos);
     },
-     cleanCmd: function(){
+     cleanCmd(){
         this.gameModel.cleanCmd();
     }
 

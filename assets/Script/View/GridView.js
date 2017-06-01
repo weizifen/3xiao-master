@@ -41,7 +41,12 @@ cc.Class({
             default:null,
             type:cc.Label,
         },
+        iceCount:{
+            default:null,
+            type:cc.Label,
+        },
         _scoreC:0,
+        _iceC:0,
         _flag:true,
         _beforeIce:null,
         
@@ -66,8 +71,9 @@ cc.Class({
                 cc.sys.localStorage.setItem("score",this._scoreC)
                 cc.director.loadScene("over");
             }
-        },1)
-
+        },1);
+        // 冰块
+        this.loadIce();
 
         // 智能提示
         // this.prompt();
@@ -94,6 +100,12 @@ cc.Class({
     },
     setController(controller){
         this.controller = controller;
+    },
+    //加载冰块数量并显示
+    loadIce(){
+        
+        this.iceCount.string=this.controller.getIceBlockCount();
+
     },
 
     initWithCellModels(cellsModels){
@@ -140,7 +152,6 @@ cc.Class({
     },
 
     setListener(){
-        console.log(this._beforeIce);
         this.node.on("touchstart", function(eventTouch){
             if(this.isInPlayAni){
                 return true;
@@ -329,6 +340,7 @@ cc.Class({
     },
     // 获得最新的状态
     updateIces(){
+        this.loadIce();
         let newCellViewInfo = [];
         // console.log(this.icesModels);
         for(var i = 1;i <=9 ;i++){
@@ -336,12 +348,15 @@ cc.Class({
                 this.icesModels[i][j].model=this._beforeIce[i][j];
                 this.icesModels[i][j].getComponent("IceView").updateWithModel(this._beforeIce[i][j]);
                 }
-            }      
+            }
+
     },
+
+
 
     playEffect(effectsQueue){
         this.effectLayer.getComponent("Boom").playEffects(effectsQueue);
-    }
+    },
 
 
 

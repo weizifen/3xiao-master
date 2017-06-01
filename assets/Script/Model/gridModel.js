@@ -18,6 +18,7 @@ export default class GameModel{
     init(cellTypeNum){
         this.cells = [];
         this.iceBlocks = [];
+        this.iceC=0;
         //  每次创造的类型
         this.setCellTypeNum(cellTypeNum || this.cellTypeNum);
         for(var i = 1;i<=GRID_WIDTH;i++){
@@ -31,6 +32,9 @@ export default class GameModel{
         for(var i = 1;i<=GRID_WIDTH;i++){
             for(var j = 1;j <= GRID_HEIGHT;j++){
                 this.iceBlocks[i][j].init(this.getCellsIce());
+                if(this.iceBlocks[i][j].isDisplay){
+                        this.iceC+=1;
+                    }
                 let flag = true;
                 while(flag){
                     flag = false;
@@ -47,10 +51,15 @@ export default class GameModel{
                     this.iceBlocks[i][j].setStartXY(j, i);
                     this.cells[i][j].setXY(j, i);
                     this.cells[i][j].setStartXY(j, i);
+
                 }
             }
         }
     };
+    // 获得冰块数量
+    getIceCount(){
+        return this.iceC;
+    }
     initWithData(data){
     }
     //智能提示---在一段时间后用户未作出明确操作   ==横向遍历
@@ -637,6 +646,7 @@ export default class GameModel{
 
             if(iceBlocks.isDisplay){
                 iceBlocks.removeIceBlock();
+                this.iceC-=1;
             }
             // console.log(this.iceBlocks);
 
