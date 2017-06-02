@@ -12,11 +12,15 @@ cc.Class({
         //    readonly: false,    // optional, default is false
         // },
         // ...
+        flash:{
+            default:[],
+            url:cc.AudioClip,
+        },
     },
 
     // use this for initialization
     onLoad: function () {
-
+        
     },
     next(){
         this.hard();

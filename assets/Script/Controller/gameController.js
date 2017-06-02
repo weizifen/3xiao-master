@@ -35,6 +35,8 @@ cc.Class({
         
 
     },
+
+    
     
     getIceBlockCount(){
         // if(this.gameModel.getIceCount()==0){
@@ -52,12 +54,20 @@ cc.Class({
     shakeCell(){
         return this.gameModel.prompt();
     },
+    shakeCellTwo(){
+        return this.gameModel.promptTwo();
+    },    
+
     selectCell(pos){
         return this.gameModel.selectCell(pos);
     },
      cleanCmd(){
         this.gameModel.cleanCmd();
-    }
+    },
+    // 点击后清除提示
+     cleanPrompt(){
+        this.gameModel
+     },
 
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {

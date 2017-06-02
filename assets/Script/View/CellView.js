@@ -56,6 +56,7 @@ cc.Class({
     // 智能提示
     updatePrompt(){
         var cmd = this.model.cmd;
+        console.log(cmd)
         if(cmd.length <= 0){
             return ;
         }
@@ -72,8 +73,7 @@ cc.Class({
                 var curTime = cmd[i].playTime;
             }
          }
-                
-                this.node.runAction(cc.repeatForever(cc.sequence(actionArray)));    
+          this.node.runAction(cc.repeat(cc.sequence(actionArray),1));    
     },
     // 
     updateView(){

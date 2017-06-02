@@ -62,6 +62,143 @@ export default class GameModel{
     }
     initWithData(data){
     }
+    // 清除提示
+    cleanPrompt(){
+        
+    }
+    // 智能提示纵向
+    promptTwo(){
+         var  ageCellModel=null;
+        for(var i = 1;i <= GRID_WIDTH; i++){
+  
+            for(var j = 1;j <= GRID_HEIGHT ;j++)
+            {
+                if(ageCellModel==null){
+                    ageCellModel=this.cells[j][i];
+                    continue;
+                }
+                console.log(ageCellModel.type,);
+                if(ageCellModel.type==this.cells[j][i].type&&ageCellModel.x==this.cells[j][i].x){
+                    // console.log(ageCellModel,this.cells[j][i])
+                    // var exist=this.colSearchBottom(ageCellModel,ageCellModel.type);
+                    // if(!exist){
+                    //      exist=this.colSearchTop(this.cells[j][i],ageCellModel.type);
+                    // }
+                    var exist=this.rowSearchLeft(ageCellModel,ageCellModel.type);
+                    if(!exist){
+                        exist=this.rowSearchRight(this.cells[j][i],ageCellModel.type); 
+                    }
+                    if(exist){
+                        exist[0].toShake(5);
+                        exist[1].toShake(5);
+                        return exist;
+                    }
+                    // return false ;    
+                    // console.log(exist[0].ice)
+                    // if(exist)
+                    // {                    
+                    // var targetIsICE=exist[0].ice;
+                    // var tempIsICE=this.temp.ice;
+
+                    // if(exist&&!targetIsICE&&!tempIsICE){
+                    //     exist[0].toShake(5);
+                    //     exist[1].toShake(5);
+                    //     return exist;
+                    // }}
+   
+                }
+                ageCellModel=this.cells[j][i];
+            }
+        }
+    }
+        //遍历两点左右  ==纵向
+    colSearchBottom(model,typeA){
+        var modelX=model.x;
+        var modelY=model.y;
+        var tempX=modelX;
+        var tempY=modelY-1;
+        var temp=this.cells[tempY][tempX];
+        this.temp=temp;
+        if(temp){
+            // 下下
+            var typeOne=this.pointForBottom(temp);
+            // console.log(typeOne,typeA);  
+            if(typeOne!=null){          
+                if(typeOne.type==typeA){
+                    console.log("存在下边一点,下下方");
+                    return [typeOne,model,"存在下边一点,下下方"];
+                }
+            }   
+            // 下左
+            var typeThree=this.pointForLeft(temp);
+            // console.log(typeThree,typeA);
+            if(typeThree!=null){                      
+                if(typeThree.type==typeA){
+                    console.log("存在下边一点,下左方");
+                    return [typeThree,model,"存在左边一点,下左位置"];
+                }
+
+            }
+
+            // 下右
+            var typeTwo=this.pointForRight(temp);
+            // console.log(typeTwo,typeA); 
+            if(typeTwo!=null){                                 
+                if(typeTwo.type==typeA){
+                    console.log("存在下边一点,下右方");
+                    return [typeTwo,model,"存在下边一点,下右方"];
+                }
+            }
+
+        }
+        return ;
+    }
+        colSearchTop(model,typeB){
+        var modelX=model.x;
+        var modelY=model.y; 
+        var modelX=model.x;
+        var modelY=model.y;
+        var tempX=modelX;
+        var tempY=modelY+1;
+        var temp=this.cells[tempY][tempX];
+        if(temp){
+            // 左上
+            var typeOne=this.pointForLeft(temp);
+            // console.log(typeOne,typeB);  
+            if(typeOne!=null){                                                       
+                if(typeOne.type==typeB){
+                    console.log("存在上边一点,上左方");
+                    return [typeOne,model,"存在上边一点,上左方"];
+                }
+            }
+            // 左右
+            var typeThree=this.pointForRight(temp);
+            // console.log(typeThree,typeB);
+            if(typeThree!=null){                                             
+                if(typeThree.type==typeB){
+                    console.log("存在上边一点,上右方");
+                    return [typeThree,model,"存在上边一点,上右方"];
+                }
+            }
+
+            // 左下
+            var typeTwo=this.pointForTop(temp);
+                // console.log(typeTwo,typeB); 
+            if(typeTwo!=null){                                 
+                if(typeTwo.type==typeB){
+                    console.log("存在上边一点,上上方");
+                    return [typeTwo,model,"存在上边一点,上上方"];
+                }
+            }
+
+        }
+        return ;      
+    }
+
+
+
+
+
     //智能提示---在一段时间后用户未作出明确操作   ==横向遍历
     prompt(){
         // console.log(this.cells);
@@ -76,22 +213,31 @@ export default class GameModel{
                     continue;
                 }
                 if(ageCellModel.type==this.cells[i][j].type&&ageCellModel.y==this.cells[i][j].y){
-                    console.log(ageCellModel,this.cells[i][j])
+                    // console.log(ageCellModel,this.cells[i][j])
                     var exist=this.rowSearchLeft(ageCellModel,ageCellModel.type);
-                    if(!exist){
-                         exist=this.rowSearchRight(this.cells[i][j],ageCellModel.type);
-                    }
-                    // console.log(exist[0].ice)
-                    if(exist)
-                    {                    
-                    var targetIsICE=exist[0].ice;
-                    var tempIsICE=this.temp.ice;
 
-                    if(exist&&!targetIsICE&&!tempIsICE){
+                    if(!exist){
+                        exist=this.rowSearchRight(this.cells[i][j],ageCellModel.type); 
+                    }
+                    if(exist){
                         exist[0].toShake(5);
                         exist[1].toShake(5);
                         return exist;
-                    }}
+                    }
+                    // return false;
+                    // console.log(exist[0].ice)
+                    //气球
+                    // if(exist)
+                    // {                    
+                    // var targetIsICE=exist[0].ice;
+                    // var tempIsICE=this.temp.ice;
+
+                    // if(exist&&!targetIsICE&&!tempIsICE){
+                    //     exist[0].toShake(5);
+                    //     exist[1].toShake(5);
+                    //     return exist;
+                    // }}
+
    
                 }
                 ageCellModel=this.cells[i][j];

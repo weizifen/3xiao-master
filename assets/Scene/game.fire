@@ -533,7 +533,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 44.49,
+      "width": 66.74,
       "height": 40
     },
     "_children": [],
@@ -578,7 +578,7 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
-    "_N$string": "60",
+    "_N$string": "100",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 0
@@ -910,7 +910,7 @@
         "__uuid__": "6fab452b-9a9c-4de8-b650-b5711614ba6c"
       },
       {
-        "__uuid__": "3dc1adf9-5591-4a6c-9e4d-1e2441945d24"
+        "__uuid__": "695ffce8-f85b-45c2-b520-215cbc808139"
       }
     ]
   },

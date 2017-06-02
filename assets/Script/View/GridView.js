@@ -45,10 +45,14 @@ cc.Class({
             default:null,
             type:cc.Label,
         },
+        _timeOut:null,
         _scoreC:0,
         _iceC:0,
         _flag:true,
         _beforeIce:null,
+        // // 横向数组 纵向数组  --检测死局
+        // _rowArray:null,
+        // _colArray:null,
         
     },
 
@@ -74,18 +78,34 @@ cc.Class({
         },1);
         // 冰块
         this.loadIce();
+        this.AsetTimeout(5000);
 
         // 智能提示
-        // this.prompt();
+        // this.promptTotal();
         // var x=this.prompt();
         // this.schedule(function(){
         //     this.prompt();
         // },5)
         
     },
-    //智能提示
-    prompt(){
-        var shakeA=this.controller.shakeCell();
+    //智能检测 总(死局检测success ,智能提示有bug)
+    promptTotal(){
+        console.log(this.controller.shakeCell());
+        if(this.controller.shakeCell()){
+            this.prompt(this.controller.shakeCell())
+        }else if(this.controller.shakeCellTwo()){
+            this.prompt(this.controller.shakeCellTwo())
+        }
+        else{
+            console.log("死局")
+            cc.director.loadScene("over");
+        }
+    },
+    //智能提示---横向
+    prompt(shakeA){
+        // var shakeA=this.controller.shakeCell();
+        this._rowArray=shakeA;
+        console.log(shakeA);
         shakeA.forEach(function(element) {
             var viewInfo = this.findViewByModel(element);
             // console.log(viewInfo)
@@ -98,6 +118,24 @@ cc.Class({
         }, this);
 
     },
+    //     //智能提示---纵向
+    // promptTwo(){
+    //     var shakeB=this.controller.shakeCellTwo();
+    //     this._colArray=shakeB;
+    //     console.log(shakeA);
+    //     shakeA.forEach(function(element) {
+    //         var viewInfo = this.findViewByModel(element);
+    //         // console.log(viewInfo)
+    //         if(viewInfo){
+    //             var cellViewScript = viewInfo.view.getComponent("CellView");
+    //             cellViewScript.updatePrompt();
+    //         }
+            
+             
+    //     }, this);
+
+    // },
+
     setController(controller){
         this.controller = controller;
     },
@@ -109,6 +147,7 @@ cc.Class({
             var actionArray=[];
             actionArray.push(cc.delayTime(2));
             var callFunc = cc.callFunc(function(){
+                // cc.audioEngine.stopAll();
                 cc.director.loadScene("congratulation");  
                 },this);
             actionArray.push(callFunc);
@@ -165,10 +204,6 @@ cc.Class({
             if(this.isInPlayAni){
                 return true;
             }
-
-            
-
-
             var touchPos = eventTouch.getLocation();
             var cellPos = this.convertTouchPosToCell(touchPos);
             if(cellPos){
@@ -215,7 +250,20 @@ cc.Class({
         var y = Math.floor(pos.y / CELL_HEIGHT) + 1;
         return cc.p(x, y);
     },
+    // 智能提示计时器
+    AsetTimeout(time){
+        var that=this;
+        console.log("知心")
+        clearTimeout(this._timeOut);
+        this._timeOut=setTimeout(function() {
+        console.log("知心1")
+
+                  that.promptTotal();
+      
+        }, time);
+    },
     updateView(changeModels){
+        this.AsetTimeout(5000);
         let newCellViewInfo = [];
         for(var i in changeModels){
             var model = changeModels[i];
