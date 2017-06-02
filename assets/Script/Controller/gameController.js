@@ -73,6 +73,9 @@ cc.Class({
      },
      getComboCount(){
          return this.gameModel.getComboCount();
+     },
+     getCurrentTime(){
+         return this.gameModel.getCurrentTime();
      }
 
     // called every frame, uncomment this function to activate update callback

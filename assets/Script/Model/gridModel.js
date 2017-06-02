@@ -591,7 +591,9 @@ export default class GameModel{
         }
         this.comboCount=cycleCount;
     }
-    
+    getCurrentTime(){
+        return this.curTime;
+    }
     //获得combo的次数
     getComboCount(){
         return this.comboCount;

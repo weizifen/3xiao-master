@@ -44,21 +44,21 @@ cc.Class({
                     instantEffect = cc.instantiate(this.crushEffect);
                     animation  = instantEffect.getComponent(cc.Animation);
                     animation.play("effect");
-                    cc.audioEngine.play(this.eliminate[1]);
+                    cc.audioEngine.play(this.eliminate[1],false, 0.3);
                 }
                 else if(cmd.action == "rowBomb"){
                     // cc.audioEngine.stopAll();
                     instantEffect = cc.instantiate(this.bombWhite);
                     animation  = instantEffect.getComponent(cc.Animation);
                     animation.play("effect_line");
-                    cc.audioEngine.play(this.eliminate[0]);
+                    cc.audioEngine.play(this.eliminate[0],false, 0.3);
                 }
                 else if(cmd.action == "colBomb"){
                     // cc.audioEngine.stopAll();
                     instantEffect = cc.instantiate(this.bombWhite);
                     animation  = instantEffect.getComponent(cc.Animation);
                     animation.play("effect_col");
-                    cc.audioEngine.play(this.eliminate[0]);
+                    cc.audioEngine.play(this.eliminate[0],false, 0.3);
                 }
 
                 instantEffect.x = CELL_WIDTH * (cmd.pos.x - 0.5);

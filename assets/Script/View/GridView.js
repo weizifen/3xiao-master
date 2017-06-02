@@ -53,7 +53,12 @@ cc.Class({
             default:[],
             type:cc.SpriteFrame,
         },
+        ComboAudio:{
+            default:[],
+            url:cc.AudioClip,
+        },
         _timeOut:null,
+        _comboTimeOut:null,
         _scoreC:0,
         _iceC:0,
         _flag:true,
@@ -67,6 +72,8 @@ cc.Class({
 
     // use this for initialization
     onLoad () {
+        // this.displayCombo.height=100;
+        // console.log(this.displayCombo.height);
         cc.audioEngine.play(this.bgAudio,true,0.2);        
         this.setListener();
         this.lastTouchPos = cc.Vec2(-1, -1);
@@ -157,7 +164,7 @@ cc.Class({
             var actionArray=[];
             actionArray.push(cc.delayTime(2));
             var callFunc = cc.callFunc(function(){
-                // cc.audioEngine.stopAll();
+                cc.audioEngine.stopAll();
                 cc.director.loadScene("congratulation");  
                 },this);
             actionArray.push(callFunc);
@@ -272,26 +279,41 @@ cc.Class({
       
         }, time);
     },
-    updateView(changeModels){
-        // 智能提示
-        this.AsetTimeout(5000);
+    combo(){
+
         // combo增加时间
         this.timeTotal+=this.controller.getAddTime();
         //combo图片
         var comboCount=this.controller.getComboCount();
         var setComboImg=this.displayCombo.getComponent(cc.Sprite);
-        if(comboCount==2){
+        if(comboCount==3){
             setComboImg.spriteFrame=this.chooseComboImg[0];
-        }else if(comboCount==3){
-            setComboImg.spriteFrame=this.chooseComboImg[1];
+            cc.audioEngine.play(this.ComboAudio[0])
+            comboCount=0;
         }else if(comboCount==4){
-            setComboImg.spriteFrame=this.chooseComboImg[2];
+            setComboImg.spriteFrame=this.chooseComboImg[1];
+             cc.audioEngine.play(this.ComboAudio[1])
+             comboCount=0;
         }else if(comboCount==5){
+            setComboImg.spriteFrame=this.chooseComboImg[2];
+             cc.audioEngine.play(this.ComboAudio[2]);
+             comboCount=0;
+        }else if(comboCount>=6){
             setComboImg.spriteFrame=this.chooseComboImg[3];
+             cc.audioEngine.play(this.ComboAudio[3]);
+             comboCount=0;
         }
-
-
-
+    },
+    setComboTimeout(time){
+        var that=this;
+        clearTimeout(this._comboTimeOut);
+        this._comboTimeOut=setTimeout(function() {
+            that.combo();
+        }, time);
+    },
+    updateView(changeModels){
+        // 智能提示
+        this.AsetTimeout(5000);
 
         let newCellViewInfo = [];
         for(var i in changeModels){
@@ -309,7 +331,15 @@ cc.Class({
                 cellViewScript.initWithModel(model);
                 view = aniView;
 
-                
+                if(this.controller.getComboCount()==3){
+                this.setComboTimeout(1000);
+                }else if(this.controller.getComboCount()==4){
+                this.setComboTimeout(2000);
+                }else if(this.controller.getComboCount()==5){
+                this.setComboTimeout(3000);
+                }else if(this.controller.getComboCount()>=6){
+                this.setComboTimeout(4000);
+                }
 
             }
             else{
