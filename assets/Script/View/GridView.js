@@ -45,6 +45,14 @@ cc.Class({
             default:null,
             type:cc.Label,
         },
+        displayCombo:{
+            default:null,
+            type:cc.Node,
+        },
+        chooseComboImg:{
+            default:[],
+            type:cc.SpriteFrame,
+        },
         _timeOut:null,
         _scoreC:0,
         _iceC:0,
@@ -79,6 +87,8 @@ cc.Class({
         // 冰块
         this.loadIce();
         this.AsetTimeout(5000);
+
+        
 
         // 智能提示
         // this.promptTotal();
@@ -263,7 +273,26 @@ cc.Class({
         }, time);
     },
     updateView(changeModels){
+        // 智能提示
         this.AsetTimeout(5000);
+        // combo增加时间
+        this.timeTotal+=this.controller.getAddTime();
+        //combo图片
+        var comboCount=this.controller.getComboCount();
+        var setComboImg=this.displayCombo.getComponent(cc.Sprite);
+        if(comboCount==2){
+            setComboImg.spriteFrame=this.chooseComboImg[0];
+        }else if(comboCount==3){
+            setComboImg.spriteFrame=this.chooseComboImg[1];
+        }else if(comboCount==4){
+            setComboImg.spriteFrame=this.chooseComboImg[2];
+        }else if(comboCount==5){
+            setComboImg.spriteFrame=this.chooseComboImg[3];
+        }
+
+
+
+
         let newCellViewInfo = [];
         for(var i in changeModels){
             var model = changeModels[i];

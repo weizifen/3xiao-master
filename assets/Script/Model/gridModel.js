@@ -10,6 +10,8 @@ export default class GameModel{
             this.cellTypeNum = 5;
             this.cellCreateType = []; // 升成种类只在这个数组里面查找
             this.temp=null;
+            this.addTime=0;           //combo增加时间
+            this.comboCount=0;           //获得combo的次数
     }
     // cellTypeNum cell类型有多少种
     // 初始化  确认几行几列
@@ -64,7 +66,7 @@ export default class GameModel{
     }
     // 清除提示
     cleanPrompt(){
-        
+
     }
     // 智能提示纵向
     promptTwo(){
@@ -563,12 +565,40 @@ export default class GameModel{
                 this.createNewCell(pos, newCellStatus, newCellType);   
 
             }
+
+
+            
+            // console.log(cycleCount);
+
+
             // 爆炸进程
             this.processBomb(bombModels);
             this.curTime += ANITIME.DIE;
             checkPoint = this.down();
             cycleCount++;
         }
+                    // 加入连击时间加长--3连击
+        this.addTime=0;
+        if(cycleCount==2){
+            this.addTime+=1;
+        }
+        else if(cycleCount==3){
+            this.addTime+=2;
+        }else if(cycleCount==4){
+            this.addTime+=3;
+        }else if(cycleCount==5){
+            this.addTime+=4;
+        }
+        this.comboCount=cycleCount;
+    }
+    
+    //获得combo的次数
+    getComboCount(){
+        return this.comboCount;
+    }
+    // 获得combo增加时间
+    getAddTime(){
+        return this.addTime;
     }
     createNewCell(pos,status,type){
         if(status == ""){

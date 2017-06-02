@@ -42,7 +42,7 @@ cc.Class({
     updateWithModel(model){
         var flag=true;
         var self=this;
-        console.log(model);
+        // console.log(model);
         if(!model.isDisplay){
             // 动画
             var actionArray=[];

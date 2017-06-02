@@ -65,9 +65,15 @@ cc.Class({
         this.gameModel.cleanCmd();
     },
     // 点击后清除提示
-     cleanPrompt(){
-        this.gameModel
+    //  cleanPrompt(){
+    //     this.gameModel
+    //  },
+     getAddTime(){
+         return this.gameModel.getAddTime();
      },
+     getComboCount(){
+         return this.gameModel.getComboCount();
+     }
 
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {
